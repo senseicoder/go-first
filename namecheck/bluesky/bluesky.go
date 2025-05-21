@@ -42,7 +42,9 @@ func IsValid(username string) (bool, error) {
 
 func IsAvailable(username string) (bool, error) {
 	return true, nil
+}
 
+func IsAvailableAPI(username string) (bool, error) {
 	url := "https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
 
 	// Construct proper handle format
