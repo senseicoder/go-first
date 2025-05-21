@@ -22,19 +22,4 @@ func main() {
 	} else {
 		fmt.Println("Aucun paramètre fourni.")
 	}
-
-	// quelques tests
-	for _, s := range []string{
-		"-cedric",
-		"cedric--test",
-		"ce",
-		"cedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedric",
-		"cedric",
-	} {
-		res, err := github.IsValid(s)
-		if err != nil {
-			fmt.Println("Error: ", err)
-		}
-		fmt.Println(s, " => ", res)
-	}
 }
