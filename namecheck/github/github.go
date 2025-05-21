@@ -12,7 +12,7 @@ var re *regexp.Regexp
 
 // Fonction init exécutée automatiquement lors de l'import
 func init() {
-	fmt.Println("mypackage: init function executed")
+	fmt.Println("github: init function executed")
 	re = regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`)
 }
 
