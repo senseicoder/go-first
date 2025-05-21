@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
 		firstArg := os.Args[1]
@@ -18,6 +17,7 @@ func main() {
 		}
 		if res {
 			fmt.Println(firstArg)
+			fmt.Println(github.IsAvailable(firstArg))
 		}
 	} else {
 		fmt.Println("Aucun paramètre fourni.")

@@ -3,6 +3,7 @@ package github
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 )
@@ -37,4 +38,24 @@ func IsValid(username string) (bool, error) {
 	}
 
 	return res, error
+}
+
+// todo injecter le client http pour les TU
+func IsAvailable(username string) (bool, error) {
+	url := "https://github.com/" + username
+	resp, err := http.Get(url)
+	if err != nil {
+		return false, errors.New("unattended error")
+	}
+	defer resp.Body.Close() //important pour fermer la connexion en fin de fonction
+	//fmt.Println(url, "=>", resp.StatusCode)
+
+	switch resp.StatusCode {
+	case http.StatusOK:
+		return false, nil
+	case http.StatusNotFound:
+		return true, nil
+	default:
+		return false, errors.New("unattended error")
+	}
 }
