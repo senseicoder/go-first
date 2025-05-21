@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+func inc(p *int) {
+	*p++
+}
+
 type Celsius int
 type Farenheit int
 
@@ -27,4 +31,20 @@ func main() {
 	} else {
 		fmt.Println("It's not May")
 	}
+
+	i := 42
+	p := &i
+
+	test()
+
+	// pointers
+	fmt.Println(p)  // adresse mémoire
+	fmt.Println(*p) // valeur pointée
+	*p++
+	fmt.Println(*p) // valeur pointée
+	inc(p)
+	inc(&i)
+	fmt.Println(*p)       // valeur pointée
+	fmt.Printf("%T\n", p) // type de la valeur pointée
+	fmt.Printf("%T\n", i) // type de la variable
 }

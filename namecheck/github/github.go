@@ -1,4 +1,4 @@
-package mypackage
+package github
 
 import (
 	"errors"
@@ -21,19 +21,19 @@ func IsValid(username string) (bool, error) {
 	res := true
 
 	if strings.HasPrefix(username, "-") {
-		error = errors.New("username cannot start with a hyphen")
 		res = false
+		error = errors.New("username cannot start with a hyphen")
 	}
 
 	if strings.Contains(username, "--") {
-		error = errors.New("username cannot contain consecutive hyphens")
 		res = false
+		error = errors.New("username cannot contain consecutive hyphens")
 	}
 
-	res = re.MatchString(username)
-	if !res {
-		error = errors.New("username must be between 3 and 39 characters long and can only contain letters, numbers, and hyphens")
+	reresult := re.MatchString(username)
+	if !reresult {
 		res = false
+		error = errors.New("username must be between 3 and 39 characters long and can only contain letters, numbers, and hyphens")
 	}
 
 	return res, error

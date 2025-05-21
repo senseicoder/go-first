@@ -4,19 +4,15 @@ import (
 	"fmt"
 	"os"
 
-	"plcoder.net/namecheck/mypackage"
+	"plcoder.net/namecheck/github"
 )
-
-func inc(p *int) {
-	*p++
-}
 
 func main() {
 
 	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
 		firstArg := os.Args[1]
-		res, err := mypackage.IsValid(firstArg)
+		res, err := github.IsValid(firstArg)
 		if err != nil {
 			fmt.Println("Error: ", err)
 		}
@@ -35,24 +31,10 @@ func main() {
 		"cedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedric",
 		"cedric",
 	} {
-		res, err := mypackage.IsValid(s)
+		res, err := github.IsValid(s)
 		if err != nil {
 			fmt.Println("Error: ", err)
 		}
 		fmt.Println(s, " => ", res)
 	}
-
-	i := 42
-	p := &i
-
-	// pointers
-	fmt.Println(p)  // adresse mémoire
-	fmt.Println(*p) // valeur pointée
-	*p++
-	fmt.Println(*p) // valeur pointée
-	inc(p)
-	inc(&i)
-	fmt.Println(*p)       // valeur pointée
-	fmt.Printf("%T\n", p) // type de la valeur pointée
-	fmt.Printf("%T\n", i) // type de la variable
 }
