@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"plcoder.net/namecheck/bluesky"
 	"plcoder.net/namecheck/github"
 )
 
@@ -16,8 +17,17 @@ func main() {
 			fmt.Println("Error: ", err)
 		}
 		if res {
-			fmt.Println(firstArg)
+			fmt.Println("github: ", firstArg)
 			fmt.Println(github.IsAvailable(firstArg))
+		}
+
+		res2, err2 := bluesky.IsValid(firstArg)
+		if err2 != nil {
+			fmt.Println("Error: ", err2)
+		}
+		if res2 {
+			fmt.Println("bluesky: ", firstArg)
+			fmt.Println(bluesky.IsAvailable(firstArg))
 		}
 	} else {
 		fmt.Println("Aucun paramètre fourni.")
