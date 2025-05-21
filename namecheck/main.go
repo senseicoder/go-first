@@ -2,39 +2,57 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"regexp"
-	"strings"
+
+	"plcoder.net/namecheck/mypackage"
 )
 
-func validateUsername(input string) bool {
-	if strings.HasPrefix(input, "-") {
-		log.Fatal("Invalid username format (begin by hyphen)")
-		return false
-	}
-
-	if strings.Contains(input, "--") {
-		log.Fatal("Invalid username format (double hyphen)")
-		return false
-	}
-
-	if re := regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`); !re.MatchString(input) {
-		log.Fatal("Invalid username format")
-		return false
-	}
-
-	return true
+func inc(p *int) {
+	*p++
 }
 
 func main() {
+
+	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
 		firstArg := os.Args[1]
-		if validateUsername(firstArg) {
+		res, err := mypackage.IsValid(firstArg)
+		if err != nil {
+			fmt.Println("Error: ", err)
+		}
+		if res {
 			fmt.Println(firstArg)
 		}
 	} else {
 		fmt.Println("Aucun paramètre fourni.")
 	}
 
+	// quelques tests
+	for _, s := range []string{
+		"-cedric",
+		"cedric--test",
+		"ce",
+		"cedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedriccedric",
+		"cedric",
+	} {
+		res, err := mypackage.IsValid(s)
+		if err != nil {
+			fmt.Println("Error: ", err)
+		}
+		fmt.Println(s, " => ", res)
+	}
+
+	i := 42
+	p := &i
+
+	// pointers
+	fmt.Println(p)  // adresse mémoire
+	fmt.Println(*p) // valeur pointée
+	*p++
+	fmt.Println(*p) // valeur pointée
+	inc(p)
+	inc(&i)
+	fmt.Println(*p)       // valeur pointée
+	fmt.Printf("%T\n", p) // type de la valeur pointée
+	fmt.Printf("%T\n", i) // type de la variable
 }
