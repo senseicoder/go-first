@@ -29,7 +29,7 @@ func main() {
 				fmt.Println("Error: ", err)
 			}
 			if res {
-				fmt.Println("github: ", firstArg)
+				fmt.Println(network.Name(), ": ", firstArg)
 				fmt.Println(network.IsAvailable(firstArg))
 			}
 		}
