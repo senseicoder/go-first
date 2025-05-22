@@ -26,12 +26,12 @@ func main() {
 
 		// Créer 20 instances de Github
 		for i := 0; i < 20; i++ {
-			networks = append(networks, github.Github{Client: http.DefaultClient})
+			networks = append(networks, &github.Github{Client: http.DefaultClient})
 		}
 
 		// Créer 20 instances de Bluesky
 		for i := 0; i < 20; i++ {
-			networks = append(networks, bluesky.Bluesky{Client: http.DefaultClient})
+			networks = append(networks, &bluesky.Bluesky{Client: http.DefaultClient})
 		}
 
 		for _, network := range networks {
