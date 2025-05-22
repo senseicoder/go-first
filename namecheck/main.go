@@ -9,29 +9,29 @@ import (
 	"plcoder.net/namecheck/github"
 )
 
+type SocialNetworker interface {
+	IsValid(username string) (bool, error)
+	IsAvailable(username string) (bool, error)
+	Name() string
+}
+
 func main() {
 	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
+		firstArg := os.Args[1]
+
 		github := github.Github{Client: http.DefaultClient}
 		bluesky := bluesky.Bluesky{Client: http.DefaultClient}
 
-		firstArg := os.Args[1]
-		res, err := github.IsValid(firstArg)
-		if err != nil {
-			fmt.Println("Error: ", err)
-		}
-		if res {
-			fmt.Println("github: ", firstArg)
-			fmt.Println(github.IsAvailable(firstArg))
-		}
-
-		res2, err2 := bluesky.IsValid(firstArg)
-		if err2 != nil {
-			fmt.Println("Error: ", err2)
-		}
-		if res2 {
-			fmt.Println("bluesky: ", firstArg)
-			fmt.Println(bluesky.IsAvailable(firstArg))
+		for _, network := range []SocialNetworker{&github, &bluesky} {
+			res, err := network.IsValid(firstArg)
+			if err != nil {
+				fmt.Println("Error: ", err)
+			}
+			if res {
+				fmt.Println("github: ", firstArg)
+				fmt.Println(network.IsAvailable(firstArg))
+			}
 		}
 	} else {
 		fmt.Fprintln(os.Stderr, "Aucun paramètre fourni.")

@@ -44,38 +44,36 @@ var Tronc *Node[int] = &Node[int]{
 	},
 }
 
-func (n *Node[int]) PrintTree(level int) {
+func (n *Node[E]) PrintTree(level int) {
 	if n == nil {
 		return
 	}
 
-	spaces := strings.Repeat("-", level*int(2))
+	spaces := strings.Repeat("-", level*2)
 	fmt.Println(spaces + fmt.Sprint(n.Value))
 
 	n.Left.PrintTree(level + 1)
 	n.Right.PrintTree(level + 1)
 }
 
-/*
-func (n *Node[int]) CountTree() int {
+func (n *Node[E]) CountTree() int {
 	if n == nil {
-		return int(0)
+		return 0
 	}
 	return int(1) + n.Left.CountTree() + n.Right.CountTree()
 }
 
-func (n *Node[int]) SumTree() int {
+func (n *Node[E]) SumTree() int {
 	if n == nil {
-		return int(0)
+		return 0
 	}
-	return n.Value.(int) + n.Left.SumTree() + n.Right.SumTree()
+	return any(n.Value).(int) + n.Left.SumTree() + n.Right.SumTree()
 }
-*/
 
 func main() {
 	fmt.Println(Tronc)
 
 	Tronc.PrintTree(0)
-	//fmt.Println("Total nodes:", Tronc.CountTree())
-	//fmt.Println("Sum of nodes:", Tronc.SumTree())
+	fmt.Println("Total nodes:", Tronc.CountTree())
+	fmt.Println("Sum of nodes:", Tronc.SumTree())
 }

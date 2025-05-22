@@ -21,6 +21,10 @@ func init() {
 	re = regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`)
 }
 
+func (E *Github) Name() string {
+	return "github"
+}
+
 func (E *Github) IsValid(username string) (bool, error) {
 	var error error
 	res := true
