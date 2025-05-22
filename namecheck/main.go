@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"sync"
 
 	"plcoder.net/namecheck/bluesky"
 	"plcoder.net/namecheck/github"
@@ -16,6 +17,21 @@ type SocialNetworker interface {
 	SetClient(client interfaces.Getter)
 	//String() string
 	fmt.Stringer
+}
+
+func execTasks(network SocialNetworker, username string, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	res, err := network.IsValid(username)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	if res {
+		if available, err := network.IsAvailable(username); err == nil {
+			fmt.Println(network, ": ", username, " : ", available)
+		}
+	}
 }
 
 func main() {
@@ -34,16 +50,13 @@ func main() {
 			networks = append(networks, &bluesky.Bluesky{Client: http.DefaultClient})
 		}
 
+		var wg sync.WaitGroup
 		for _, network := range networks {
-			res, err := network.IsValid(firstArg)
-			if err != nil {
-				fmt.Println("Error: ", err)
-			}
-			if res {
-				fmt.Println(network, ": ", firstArg)
-				fmt.Println(network.IsAvailable(firstArg))
-			}
+			wg.Add(1)
+			go execTasks(network, firstArg, &wg)
 		}
+
+		wg.Wait()
 	} else {
 		fmt.Fprintln(os.Stderr, "Aucun paramètre fourni.")
 	}
