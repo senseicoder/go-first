@@ -21,8 +21,12 @@ func init() {
 	re = regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`)
 }
 
-func (E *Bluesky) Name() string {
+func (E *Bluesky) String() string {
 	return "bluesky"
+}
+
+func (E *Bluesky) SetClient(client *http.Client) {
+	E.Client = client
 }
 
 func (E *Bluesky) IsValid(username string) (bool, error) {
