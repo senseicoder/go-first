@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+
+	"plcoder.net/namecheck/interfaces"
 )
 
 type Bluesky struct {
-	Client *http.Client
+	Client interfaces.Getter
 }
 
 // Variable globale initialisée par init
@@ -25,7 +27,7 @@ func (E *Bluesky) String() string {
 	return "bluesky"
 }
 
-func (E *Bluesky) SetClient(client *http.Client) {
+func (E *Bluesky) SetClient(client interfaces.Getter) {
 	E.Client = client
 }
 

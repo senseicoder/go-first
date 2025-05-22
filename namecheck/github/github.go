@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+
+	"plcoder.net/namecheck/interfaces"
 )
 
 type Github struct {
-	Client *http.Client
+	Client interfaces.Getter
 }
 
 // Variable globale initialisée par init
@@ -25,7 +27,7 @@ func (E *Github) String() string {
 	return "github"
 }
 
-func (E *Github) SetClient(client *http.Client) {
+func (E *Github) SetClient(client interfaces.Getter) {
 	E.Client = client
 }
 

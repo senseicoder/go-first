@@ -8,13 +8,15 @@ import (
 
 	"plcoder.net/namecheck/bluesky"
 	"plcoder.net/namecheck/github"
+	"plcoder.net/namecheck/interfaces"
 )
 
 type SocialNetworker interface {
 	IsValid(username string) (bool, error)
 	IsAvailable(username string) (bool, error)
-	String() string
-	SetClient(client *http.Client)
+	SetClient(client interfaces.Getter)
+	//String() string
+	fmt.Stringer
 }
 
 func main() {
