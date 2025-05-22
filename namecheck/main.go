@@ -11,6 +11,9 @@ import (
 func main() {
 	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
+		var github github.Github
+		var bluesky bluesky.Bluesky
+
 		firstArg := os.Args[1]
 		res, err := github.IsValid(firstArg)
 		if err != nil {
@@ -30,6 +33,6 @@ func main() {
 			fmt.Println(bluesky.IsAvailable(firstArg))
 		}
 	} else {
-		fmt.Println("Aucun paramètre fourni.")
+		fmt.Fprintln(os.Stderr, "Aucun paramètre fourni.")
 	}
 }

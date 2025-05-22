@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+type Github struct {
+	client *http.Client
+}
+
 // Variable globale initialisée par init
 var re *regexp.Regexp
 
@@ -17,7 +21,7 @@ func init() {
 	re = regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`)
 }
 
-func IsValid(username string) (bool, error) {
+func (E *Github) IsValid(username string) (bool, error) {
 	var error error
 	res := true
 
@@ -41,9 +45,9 @@ func IsValid(username string) (bool, error) {
 }
 
 // todo injecter le client http pour les TU
-func IsAvailable(username string) (bool, error) {
+func (E *Github) IsAvailable(username string) (bool, error) {
 	url := "https://github.com/" + username
-	resp, err := http.Get(url)
+	resp, err := E.client.Get(url)
 	if err != nil {
 		return false, errors.New("unattended error")
 	}

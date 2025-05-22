@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+type Bluesky struct {
+	client *http.Client
+}
+
 // Variable globale initialisée par init
 var re *regexp.Regexp
 
@@ -17,7 +21,7 @@ func init() {
 	re = regexp.MustCompile(`^[A-Za-z0-9-]{3,39}$`)
 }
 
-func IsValid(username string) (bool, error) {
+func (E *Bluesky) IsValid(username string) (bool, error) {
 	var error error
 	res := true
 
@@ -40,11 +44,11 @@ func IsValid(username string) (bool, error) {
 	return res, error
 }
 
-func IsAvailable(username string) (bool, error) {
+func (E *Bluesky) IsAvailable(username string) (bool, error) {
 	return true, nil
 }
 
-func IsAvailableAPI(username string) (bool, error) {
+func (E *Bluesky) IsAvailableAPI(username string) (bool, error) {
 	url := "https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
 
 	// Construct proper handle format
@@ -56,7 +60,7 @@ func IsAvailableAPI(username string) (bool, error) {
 	// Add handle as query parameter
 	url += "?handle=" + handle
 
-	resp, err := http.Get(url)
+	resp, err := E.client.Get(url)
 	if err != nil {
 		return false, fmt.Errorf("error checking availability: %w", err)
 	}

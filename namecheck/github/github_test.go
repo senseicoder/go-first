@@ -37,9 +37,11 @@ func TestIsValid(t *testing.T) {
 		},
 	}
 
+	var g Github
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, _ := IsValid(tt.username)
+			got, _ := g.IsValid(tt.username)
 			if got != tt.want {
 				t.Errorf("IsValid() = %v, want %v for username %q", got, tt.want, tt.username)
 			}
