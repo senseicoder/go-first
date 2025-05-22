@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"plcoder.net/namecheck/bluesky"
@@ -11,8 +12,8 @@ import (
 func main() {
 	// paramètre et validation de l'argument
 	if len(os.Args) > 1 {
-		var github github.Github
-		var bluesky bluesky.Bluesky
+		github := github.Github{Client: http.DefaultClient}
+		bluesky := bluesky.Bluesky{Client: http.DefaultClient}
 
 		firstArg := os.Args[1]
 		res, err := github.IsValid(firstArg)

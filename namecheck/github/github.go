@@ -9,7 +9,7 @@ import (
 )
 
 type Github struct {
-	client *http.Client
+	Client *http.Client
 }
 
 // Variable globale initialisée par init
@@ -47,7 +47,7 @@ func (E *Github) IsValid(username string) (bool, error) {
 // todo injecter le client http pour les TU
 func (E *Github) IsAvailable(username string) (bool, error) {
 	url := "https://github.com/" + username
-	resp, err := E.client.Get(url)
+	resp, err := E.Client.Get(url)
 	if err != nil {
 		return false, errors.New("unattended error")
 	}

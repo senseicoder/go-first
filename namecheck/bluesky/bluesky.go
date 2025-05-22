@@ -9,7 +9,7 @@ import (
 )
 
 type Bluesky struct {
-	client *http.Client
+	Client *http.Client
 }
 
 // Variable globale initialisée par init
@@ -60,7 +60,7 @@ func (E *Bluesky) IsAvailableAPI(username string) (bool, error) {
 	// Add handle as query parameter
 	url += "?handle=" + handle
 
-	resp, err := E.client.Get(url)
+	resp, err := E.Client.Get(url)
 	if err != nil {
 		return false, fmt.Errorf("error checking availability: %w", err)
 	}
