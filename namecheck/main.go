@@ -11,6 +11,13 @@ import (
 	"plcoder.net/namecheck/interfaces"
 )
 
+type Result struct {
+	Platform  string
+	Valid     bool
+	Available bool
+	Err       error
+}
+
 type SocialNetworker interface {
 	IsValid(username string) (bool, error)
 	IsAvailable(username string) (bool, error)
@@ -19,7 +26,7 @@ type SocialNetworker interface {
 	fmt.Stringer
 }
 
-func execTasks(network SocialNetworker, username string, wg *sync.WaitGroup) {
+func execTasks(network SocialNetworker, username string, wg *sync.WaitGroup, resultCh chan Result) {
 	defer wg.Done()
 
 	res, err := network.IsValid(username)
@@ -29,7 +36,8 @@ func execTasks(network SocialNetworker, username string, wg *sync.WaitGroup) {
 	}
 	if res {
 		if available, err := network.IsAvailable(username); err == nil {
-			fmt.Println(network, ": ", username, " : ", available)
+			//fmt.Println(network, ": ", username, " : ", available)
+			resultCh <- Result{Platform: network.String(), Valid: res, Available: available, Err: err}
 		}
 	}
 }
@@ -37,6 +45,8 @@ func execTasks(network SocialNetworker, username string, wg *sync.WaitGroup) {
 func main() {
 	if len(os.Args) > 1 {
 		firstArg := os.Args[1]
+
+		resultCh := make(chan Result)
 
 		networks := make([]SocialNetworker, 0, 40) // Pré-allouer pour 40 éléments
 
@@ -53,7 +63,17 @@ func main() {
 		var wg sync.WaitGroup
 		for _, network := range networks {
 			wg.Add(1)
-			go execTasks(network, firstArg, &wg)
+			go execTasks(network, firstArg, &wg, resultCh)
+		}
+		go func() {
+			wg.Wait()
+			close(resultCh) // Fermer le canal après que toutes les goroutines aient terminé
+		}()
+
+		nb := 0
+		for result := range resultCh {
+			fmt.Println("agrégé ", nb, ": ", result.Platform, ": ", result.Valid, " : ", result.Available)
+			nb++
 		}
 
 		wg.Wait()
