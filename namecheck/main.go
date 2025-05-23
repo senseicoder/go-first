@@ -15,7 +15,7 @@ type SocialNetworker interface {
 	IsValid(username string) (bool, error)
 	IsAvailable(username string) (bool, error)
 	SetClient(client interfaces.Getter)
-	//String() string
+	//String() string peut être remplacée par l'import d'une interface
 	fmt.Stringer
 }
 
